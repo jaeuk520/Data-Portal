@@ -21,31 +21,36 @@ class UserStorage {
         return newUsers;
     }
 
-    static getUserInfo(id) {
-        const users = this.#users;
-        const idx = users.id.indexOf(id);
-        const usersKeys = Object.keys(users);
-        const userInfo = usersKeys.reduce((newUser, info) => {
-            newUser[info] = users[info][idx];
-            return newUser;
-        }, {});
-        return userInfo;
+    static getUserInfo(id, callback) {
+        // DB에서 search
+        
+        const sql = `select * from user where '${id}' = user.id`;
+        connection.query(sql, [id], (error, results) => {
+            if (error) {
+              callback(error, null);
+            } else {
+              if (results.length > 0) {
+                const userInfo = {
+                  id: results[0].id,
+                  password: results[0].pw
+                };
+                callback(null, userInfo);
+              } else {
+                callback('사용자를 찾을 수 없음', null);
+              }
+            }
+          });
     }
 
     static save(userInfo) {
         // DB에 데이터 저장
-        connection.connect();
         let sql = `insert into user(id, name, pw) values ('${userInfo.id}', '${userInfo.name}', '${userInfo.password}')`;
         db.query(sql, function(err, result) {
-            if(err) throw err;
+            if(err) {throw err;}
             console.log("1 record inserted");
-            console.log(result);
-            connection.end();
         });
         return {success: true};
     }
-
-    
 }
 
 module.exports = UserStorage;
