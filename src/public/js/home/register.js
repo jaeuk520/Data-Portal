@@ -1,7 +1,5 @@
 "use strict";
 
-const { Regex } = require("../../../constant/regex");
-
 //documnet: 페이지 그 자체
 //querySelector(): document 내의 요소를 검색하고 여러 결과를 찾았다면 첫 번째 요소만 리턴
 //#(샵) : private 
@@ -16,15 +14,22 @@ const idRegexToString = '^(?=.*[a-zA-Z])(?=.*[0-9]).{5,12}$',
     nameRegexToString = '^[가-힣]{2,4}$',
     pwRegexToString = '^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,12}$';
 
+//알림 메시지
+const validateInputAlaertMsg = "빈 칸을 입력해주세요.",
+    validateIdRegexAlertMsg = "아이디는 5자 이상, 12자 이하의 영문, 숫자 조합이어야 합니다.",
+    validateNameRegexMsg = "이름은 2자 이상, 4자 이하의 한글 조합이어야 합니다.",
+    validatePasswordRegexMsg = "비밀번호는 8자 이상, 12자 이하의 영문, 숫자, 특수문자 조합이어야 합니다.",
+    validatePasswordMsg = "비밀번호가 일치하지 않습니다.";
+
 //register 버튼 클릭
 registerBtn.addEventListener("click", register);
 
 function register() {
-    if(!validateInput(id.value, name.value, password.value, confirmPassword.value)) return alert("빈 칸을 입력해주세요.");
-    if(!validateIdRegex(id.value)) return alert("아이디는 5자 이상, 12자 이하의 영문, 숫자 조합이어야 합니다.");
-    if(!validateNameRegex(name.value)) return alert("이름은 2자 이상, 4자 이하의 한글 조합이어야 합니다.");
-    if(!validatePasswordRegex(password.value)) return alert("비밀번호는 8자 이상, 12자 이하의 영문, 숫자, 특수문자 조합이어야 합니다.");
-    if(!validatePassword(password.value, confirmPassword.value)) return alert("비밀번호가 일치하지 않습니다.");
+    if(!validateInput(id.value, name.value, password.value, confirmPassword.value)) return alert(validateInputAlaertMsg);
+    if(!validateIdRegex(id.value)) return alert(validateIdRegexAlertMsg);
+    if(!validateNameRegex(name.value)) return alert(validateNameRegexMsg);
+    if(!validatePasswordRegex(password.value)) return alert(validatePasswordRegexMsg);
+    if(!validatePassword(password.value, confirmPassword.value)) return alert(validatePasswordMsg);
     
     const req = {
         id: id.value,
@@ -54,10 +59,6 @@ function register() {
 
 // 빈 칸 입력 유효성 검사
 function validateInput(id, name, password, confirmPassword){
-    console.log(!id)
-    console.log(!name)
-    console.log(!password)
-    console.log(!confirmPassword)
     if((!id) || (!name) || (!password) || (!confirmPassword)) {
         return false
     }

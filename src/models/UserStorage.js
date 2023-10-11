@@ -1,5 +1,8 @@
 "use strict";
 
+const connection = require('../lib/db.js');
+var db = require('../lib/db.js');
+
 class UserStorage {
     static #users = {
         id: ["jaeuk", "jaeuk2", "jaeuk3"],
@@ -30,12 +33,19 @@ class UserStorage {
     }
 
     static save(userInfo) {
-        const users = this.#users;
-        users.id.push(userInfo.id);
-        users.name.push(userInfo.name);
-        users.password.push(userInfo.password);
-        return  {success: true};
+        // DB에 데이터 저장
+        connection.connect();
+        let sql = `insert into user(id, name, pw) values ('${userInfo.id}', '${userInfo.name}', '${userInfo.password}')`;
+        db.query(sql, function(err, result) {
+            if(err) throw err;
+            console.log("1 record inserted");
+            console.log(result);
+            connection.end();
+        });
+        return {success: true};
     }
+
+    
 }
 
 module.exports = UserStorage;
