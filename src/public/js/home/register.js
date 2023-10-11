@@ -1,5 +1,7 @@
 "use strict";
 
+//documnet: 페이지 그 자체
+//querySelector(): document 내의 요소를 검색하고 여러 결과를 찾았다면 첫 번째 요소만 리턴
 const id = document.querySelector("#id"),
     name = document.querySelector("#name"),
     password = document.querySelector("#password"),
@@ -20,21 +22,38 @@ function register() {
         confirmPassword: confirmPassword.value,
     };
 
-    fetch("/register", {
-        method: "POST",
+    axios.post("/register", req, {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(req),
-    }).then((res) => res.json())
-        .then((res) => {
-            if(res.success) {
-                location.href = "/login";
-            } else {
-                alert(res.msg);
-            }
-        })
-        .catch((err) => {
-            console.error("register Error");
-        });
+    })
+    .then((response) => {
+        const res = response.data;
+        if(res.success) {
+            location.href = "/login";
+        } else {
+            alert(res.msg);
+        }
+    })
+    .catch((error) => {
+        console.error("register Error", error);
+    });
+
+    // fetch("/register", {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(req),
+    // }).then((res) => res.json())
+    //     .then((res) => {
+    //         if(res.success) {
+    //             location.href = "/login";
+    //         } else {
+    //             alert(res.msg);
+    //         }
+    //     })
+    //     .catch((err) => {
+    //         console.error("register Error");
+    //     });
 }
