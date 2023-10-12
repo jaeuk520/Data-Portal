@@ -16,12 +16,11 @@ class User {
           } else {
             console.log('사용자 정보:', userInfo);
             const { id, password } = userInfo;
-            console.log('ID:', id);
-            console.log('비밀번호:', password);
     
             if (id) {
+              //유저 정보 일치 확인
               if (id === client.id && password === client.password) {
-                callback({ success: true });
+                callback({ success: true, userInfo: userInfo });
               } else {
                 callback({ success: false, msg: "비밀번호가 틀렸습니다." });
               }
