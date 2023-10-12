@@ -25,8 +25,13 @@ const process = {
     login: (req, res) => {
         const user = new User(req.body);
         user.login((response) => {
-            res.json(response);
-          });
+            if(response["success"] == true){
+                req.session.loginData = response['userInfo'];
+                req.session.save(error => {if(error) console.log(error)})
+            }
+            console.log(req.session);
+            return res.json(response);
+        });
     },
     register: (req, res) => {
         const user = new User(req.body);
