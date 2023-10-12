@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <a href="/login">로그인</a>
+    <a href="<%= isAuthenticated ? '/logout' : '/login' %>"><%= isAuthenticated ? '로그아웃' : '로그인' %></a>
     <a href="/register">회원가입</a>
     <a href="/data-list">데이터목록</a>
 </body>
