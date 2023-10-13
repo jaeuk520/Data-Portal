@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>공공데이터 포털</title>
 </head>
 <body>
     <a href="<%= isAuthenticated ? '/logout' : '/login' %>"><%= isAuthenticated ? '로그아웃' : '로그인' %></a>
@@ -12,8 +12,8 @@
     <% } %>
     <a href="/data">데이터목록</a>
     <% if (isAuthenticated) { %>
-        <button onclick="location.href='/api'">api 인증키 발급받기</button>
+        <button onclick="location.href='/api'">api 인증키 발급받기</button>    
+        <a href="/data/upload">데이터요청</a>
     <% } %>
-    <a href="/data/upload">데이터요청</a>
 </body>
 </html>

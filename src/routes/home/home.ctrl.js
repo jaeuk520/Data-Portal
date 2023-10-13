@@ -1,6 +1,7 @@
 "use strict";
 
 const User = require("../../models/User");
+const File = require("../../models/File");
 const s3 = require('../../aws/s3');
 
 const axios = require('axios');
@@ -27,9 +28,9 @@ const output = {
             res.render('home/data', { files }); // data.ejs 파일에 파일 목록을 전달하여 렌더링
         });
     },
-    // data: (req, res) => {
-    //     res.render("home/data");
-    // },
+    dataUpload: (req, res) => {
+        res.render("home/dataUpload");
+    }
 };
 
 const process = {
@@ -68,7 +69,7 @@ const process = {
 
         console.log(file);
 
-        const s3Bucket = 'data-portal-test-bucket'; // S3 버킷 이름
+        const s3Bucket = 'test-ec2-s3-konkuk'; // S3 버킷 이름
 
         // S3 URL 생성
         const s3Url = `https://${s3Bucket}.s3.amazonaws.com/${file}`;
@@ -92,6 +93,12 @@ const process = {
                 console.error('파일 다운로드 중 오류:', error);
             });
     },
+    dataUpload: (req, res) => {
+        const file = new File(req.body);
+        const response = file.upload();
+        console.log(response);
+        return res.json(response);
+    }
 };
 
 module.exports = {

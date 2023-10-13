@@ -1,26 +1,26 @@
 "use strict";
 
-const id = document.querySelector("#id"),
-    password = document.querySelector("#password"),
-    loginBtn = document.querySelector("button");
+const fileName = document.querySelector("#fileName"),
+    uploadBtn = document.querySelector("button");
 
 //login 버튼 클릭
-loginBtn.addEventListener("click", login);
+uploadBtn.addEventListener("click", upload);
 
-function login() {
+function upload() {
     const req = {
-        id: id.value,
-        password: password.value,
+        fileName: fileName.value,
     };
+    console.log(req);
 
     //axios 사용
-    axios.post("/login", req, {
+    axios.post("/data/upload", req, {
         headers: {
             "Content-Type": "application/json",
         },
     })
     .then((response) => {
         const res = response.data;
+        console.log(res);
         if (res.success) {
             location.href = "/";
         } else {
@@ -28,6 +28,6 @@ function login() {
         }
     })
     .catch((error) => {
-        console.error("Login Error", error);
+        console.error("Upload Error", error);
     });
 }
