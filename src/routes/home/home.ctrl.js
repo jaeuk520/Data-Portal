@@ -1,6 +1,7 @@
 "use strict";
 
 const User = require("../../models/User");
+const s3 = require('../../aws/s3');
 
 const output = {
     home: (req, res) => {
@@ -13,23 +14,30 @@ const output = {
     register: (req, res) => {
         res.render("home/register");
     },
-    dataList: (req, res) => {
-        res.render("home/dataList");
-    },
     data: (req, res) => {
-        res.render("home/data");
+        s3.getFileLists((err, files) => {
+            if (err) {
+                res.status(500).send('파일 목록을 가져오는 중 오류가 발생했습니다.');
+                return;
+            }
+            console.log(files);
+            res.render('home/data', { files }); // data.ejs 파일에 파일 목록을 전달하여 렌더링
+        });
     },
+    // data: (req, res) => {
+    //     res.render("home/data");
+    // },
 };
 
 const process = {
     login: (req, res) => {
         const user = new User(req.body);
         user.login((response) => {
-            if(response.success == true){
+            if (response.success == true) {
                 // 세션 생성
-                req.session.isAuthenticated = true; 
+                req.session.isAuthenticated = true;
                 req.session.loginData = response.userInfo;
-                req.session.save(error => {if(error) console.log(error)})
+                req.session.save(error => { if (error) console.log(error) })
             }
             console.log(req.session);
             return res.json(response);
@@ -43,7 +51,7 @@ const process = {
     logout: (req, res) => {
         //세션 파기, root로 리디렉트
         req.session.isAuthenticated = false;
-        req.session.destroy(error => {if(error) console.log(error)});
+        req.session.destroy(error => { if (error) console.log(error) });
         return res.redirect('/');
     },
     api: (req, res) => {
@@ -51,6 +59,9 @@ const process = {
         const response = user.setApiKey();
         return res.redirect('/');
     },
+    download: (req, res) => {
+
+    }
 };
 
 module.exports = {
