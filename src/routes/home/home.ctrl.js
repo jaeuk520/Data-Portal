@@ -69,7 +69,7 @@ const process = {
 
         console.log(file);
 
-        const s3Bucket = 'test-ec2-s3-konkuk'; // S3 버킷 이름
+        const s3Bucket = 'data-portal-test-bucket'; // S3 버킷 이름
 
         // S3 URL 생성
         const s3Url = `https://${s3Bucket}.s3.amazonaws.com/${file}`;

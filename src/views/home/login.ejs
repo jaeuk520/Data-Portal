@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="/js/home/login.js" defer></script>
+
     <title>공공데이터 포털</title>
 </head>
+
 <body>
-    <input id="id" type="text" placeholder="아이디"><br>
+    <!-- <input id="id" type="text" placeholder="아이디"><br>
     <input id="password" type="text" placeholder="비밀번호"><br>
     <button>로그인</button>
-    <a href="/register">회원가입</a>
+    <a href="/register">회원가입</a> -->
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <div class="wrapper">
+        <form class="form-signin">
+            <h2 class="form-signin-heading">Please login</h2>
+            <input id="id" type="text" class="form-control" placeholder="아이디" required=""
+                autofocus="" />
+            <input id="password" type="password" class="form-control" placeholder="비밀번호" required="" />
+            <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+        </form>
+    </div>
 </body>
+
 </html>
