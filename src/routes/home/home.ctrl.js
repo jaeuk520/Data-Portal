@@ -10,7 +10,6 @@ const output = {
     login: (req, res) => {
         res.render("home/login");
     },
-
     register: (req, res) => {
         res.render("home/register");
     },
@@ -46,7 +45,12 @@ const process = {
         req.session.isAuthenticated = false;
         req.session.destroy(error => {if(error) console.log(error)});
         return res.redirect('/');
-    }
+    },
+    api: (req, res) => {
+        const user = new User(req.session.loginData);
+        const response = user.setApiKey();
+        return res.redirect('/');
+    },
 };
 
 module.exports = {

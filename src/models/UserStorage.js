@@ -3,23 +3,9 @@
 const connection = require('../lib/db.js');
 var db = require('../lib/db.js');
 
-class UserStorage {
-    static #users = {
-        id: ["jaeuk", "jaeuk2", "jaeuk3"],
-        password: ["1234", "1234", "123456"],
-        name: ["재욱", "욱박", "박재"],
-    };
+const MAX_API_KEY_LENGTH = 30;
 
-    static getUsers(...fields) {
-        const users = this.#users;
-        const newUsers = fields.reduce((newUsers, field) => {
-            if(users.hasOwnProperty(field)) {
-                newUsers[field] = users[field];
-            }
-            return newUsers;
-        }, {});
-        return newUsers;
-    }
+class UserStorage {
 
     static getUserInfo(id, callback) {
         // DB에서 search
@@ -44,12 +30,34 @@ class UserStorage {
 
     static save(userInfo) {
         // DB에 데이터 저장
-        let sql = `insert into user(id, name, pw) values ('${userInfo.id}', '${userInfo.name}', '${userInfo.password}')`;
+        const sql = `insert into user(id, name, pw) values ('${userInfo.id}', '${userInfo.name}', '${userInfo.password}')`;
         db.query(sql, function(err, result) {
             if(err) {throw err;}
             console.log("1 record inserted");
         });
-        return {success: true};
+        return {success: false};
+    }
+
+    static setApiKey(userInfo) {
+      // DB에 apiKey등록
+      const apiKey = UserStorage.generateRandomApiKey(MAX_API_KEY_LENGTH);
+      const sql = `update user set api_Key = '${apiKey}' where user.id = '${userInfo.id}'`;
+      db.query(sql, function(err, result) {
+        if(err) throw err;
+        console.log("1 record updated");
+      });
+      return {success: true};
+    }
+
+    static generateRandomApiKey(apiKeyLength) {
+      const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      const charactersLength = characters.length;
+      for (let i = 0; i < apiKeyLength; i++) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+
+      return result;
     }
 }
 
