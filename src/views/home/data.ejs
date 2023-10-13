@@ -12,12 +12,13 @@
     <ul>
         <% files.forEach(file=> { %>
             <li>
-                <a href="/download?file=<%= file %>">
+                <a href="/data/download?file=<%= file %>" download>
                     <%= file %>
                 </a>
             </li>
             <% }); %>
     </ul>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 
 </html>

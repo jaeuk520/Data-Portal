@@ -3,6 +3,9 @@
 const User = require("../../models/User");
 const s3 = require('../../aws/s3');
 
+const axios = require('axios');
+const fs = require('fs');
+
 const output = {
     home: (req, res) => {
         //로그인/로그아웃 동적 렌더링
@@ -60,8 +63,35 @@ const process = {
         return res.redirect('/');
     },
     download: (req, res) => {
+        const encodedFile = req._parsedOriginalUrl.query.substring(5);
+        const file = decodeURIComponent(encodedFile);
 
-    }
+        console.log(file);
+
+        const s3Bucket = 'data-portal-test-bucket'; // S3 버킷 이름
+
+        // S3 URL 생성
+        const s3Url = `https://${s3Bucket}.s3.amazonaws.com/${file}`;
+
+        axios({
+            method: 'get',
+            url: s3Url,
+            responseType: 'stream',
+        })
+            .then((response) => {
+                // 스트림 형태로 파일 다운로드
+                const downloadPath = `./${file}`; // 현재 작업 디렉토리에 파일 저장
+                const fileStream = fs.createWriteStream(downloadPath);
+                response.data.pipe(fileStream);
+
+                fileStream.on('finish', () => {
+                    res.download(downloadPath);
+                });
+            })
+            .catch((error) => {
+                console.error('파일 다운로드 중 오류:', error);
+            });
+    },
 };
 
 module.exports = {

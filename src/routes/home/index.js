@@ -12,9 +12,10 @@ router.get("/data", ctrl.output.data);
 // router.get("/data", ctrl.output.data);
 router.get("/logout", ctrl.process.logout);
 router.get("/api", ctrl.process.api);
+router.get("/data/upload", ctrl.process.api);
 
+router.get("/data/download", ctrl.process.download);
 router.post("/login", ctrl.process.login);
 router.post("/register", ctrl.process.register);
-//router.post("/data/download", ctrl.process.data);
 
 module.exports = router;
