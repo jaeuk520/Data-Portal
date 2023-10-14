@@ -35,7 +35,7 @@ class UserStorage {
       if (err) { throw err; }
       console.log("1 record inserted");
     });
-    return { success: false };
+    return { success: true };
   }
 
   static setApiKey(userInfo) {

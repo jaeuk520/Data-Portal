@@ -11,8 +11,7 @@ class User {
     const client = this.body;
     UserStorage.getUserInfo(client.id, (error, userInfo) => {
       if (error) {
-        console.error('오류 발생: ' + error);
-        callback({ success: false, msg: "오류 발생" });
+        callback({ success: false, msg: "존재하지 않는 아이디입니다." });
       } else {
         console.log('사용자 정보:', userInfo);
         const { id, password } = userInfo;
@@ -23,8 +22,6 @@ class User {
           } else {
             callback({ success: false, msg: "비밀번호가 틀렸습니다." });
           }
-        } else {
-          callback({ success: false, msg: "존재하지 않는 아이디입니다." });
         }
       }
     });

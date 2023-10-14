@@ -13,9 +13,9 @@
         <a href="/register">회원가입</a>
     <% } %>
     <a href="/data">데이터목록</a>
-    <% if (isAuthenticated) { %>
-        <button onclick="location.href='/api'">api 인증키 발급받기</button>    
+    <% if (isAuthenticated) { %>      
         <a href="/data/upload">데이터요청</a>
+        <button onclick="location.href='/api'">api 인증키 발급받기</button>    
     <% } %>
 </body>
 </html>
